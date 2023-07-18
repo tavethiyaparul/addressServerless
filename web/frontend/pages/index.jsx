@@ -8,6 +8,7 @@ import {
   Link,
   Text,
   DisplayText,
+  Button,
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import { useTranslation, Trans } from "react-i18next";
@@ -17,24 +18,32 @@ import { trophyImage } from "../assets";
 // import TabComponents from "../components/TabComponents";
 import TopBarcomponent from "../components/TopBarcomponent";
 import Addressvalidation from "../components/Addressvalidation";
+import DefaultCountry from "../components/DefaultCountry";
+import RemoveCountry from "../components/RemoveCountry";
 
 export default function HomePage() {
   const { t } = useTranslation();
   return (
-    <Page narrowWidth>
+    <Page>
       <Layout>
-        {/* <Layout.Section> */}
-        <TopBarcomponent />
-
-        {/* </Layout.Section> */}
+           <TopBarcomponent />
       </Layout>
-      {/* <Card> */}
-      <DisplayText size="medium">
-        Addrexx Configurations for Shopify
-      </DisplayText>
-      <Addressvalidation />
+      <center>
+        <DisplayText size="small">
+          Addrexx Configurations for Shopify
+        </DisplayText>
+      </center>
+      <br />
+      <div>
+        <Addressvalidation />
+        <br />
+        {/* <DefaultCountry /> */}
+        {/* <br /> */}
+        {/* <RemoveCountry /> */}
+        {/* <br /> */}
+       
+      </div>
 
-      {/* </Card> */}
     </Page>
   );
 }

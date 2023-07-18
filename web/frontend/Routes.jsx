@@ -1,5 +1,7 @@
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
 
+
+import setting from "./pages/Setting";
 /**
  * File-based routing.
  * @desc File-based routing that uses React Router under the hood.
@@ -16,16 +18,20 @@ import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
  */
 export default function Routes({ pages }) {
   const routes = useRoutes(pages);
+  console.log("routes",routes)
   const routeComponents = routes.map(({ path, component: Component }) => (
     <Route key={path} path={path} element={<Component />} />
   ));
 
   const NotFound = routes.find(({ path }) => path === "/notFound").component;
-
+    console.log("routeComponents",routeComponents)
   return (
+    
     <ReactRouterRoutes>
       {routeComponents}
       <Route path="*" element={<NotFound />} />
+      <Route path="/setting" element={setting} />
+  
     </ReactRouterRoutes>
   );
 }

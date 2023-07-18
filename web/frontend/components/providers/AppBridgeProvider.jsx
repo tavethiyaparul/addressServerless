@@ -40,7 +40,10 @@ export function AppBridgeProvider({ children }) {
       window.__SHOPIFY_DEV_HOST;
 
     window.__SHOPIFY_DEV_HOST = host;
-
+    const shop =
+      new URLSearchParams(location.search).get("shop")
+      window.shop = shop;
+      console.log("shops: " + shop)
     return {
       host,
       apiKey: process.env.SHOPIFY_API_KEY,

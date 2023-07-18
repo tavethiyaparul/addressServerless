@@ -36,7 +36,7 @@ export default function TopBarcomponent() {
   const logo = {
     width: 124,
     topBarSource:
-      "https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg?6215648040070010999",
+      "https://addrexx.com/wp-content/uploads/2018/04/logo_100_200_042818.png",
     url: "#",
     accessibilityLabel: "Jaded Pixel",
   };
@@ -101,7 +101,7 @@ export default function TopBarcomponent() {
   const topBarMarkup = (
     <TopBar
       showNavigationToggle
-      userMenu={userMenuMarkup}
+      // userMenu={userMenuMarkup}
       // secondaryMenu={secondaryMenuMarkup}
       searchResultsVisible={isSearchActive}
       searchField={
@@ -111,11 +111,11 @@ export default function TopBarcomponent() {
               <b>Dashboard</b>
             </h2>
           </div> */}
-          <div>
+          {/* <div>
             <h2>
               <b>Address Config</b>
             </h2>
-          </div>
+          </div> */}
         </div>
       }
       searchResults={searchResultsMarkup}
