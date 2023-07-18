@@ -1,28 +1,57 @@
-import { Autocomplete, Spinner, DisplayText, LegacyStack, Tag, Text,Button, LegacyCard } from "@shopify/polaris";
+import {
+  Autocomplete,
+  Spinner,
+  DisplayText,
+  LegacyStack,
+  Tag,
+  Text,
+  Button,
+  LegacyCard,
+  Toast,
+} from "@shopify/polaris";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import Switch from "react-switch";
 import { Select } from "@shopify/polaris";
 import axios from "axios";
 import { useAppBridge } from "@shopify/app-bridge-react";
-import country from "../basicfunction/country.json"
+import country from "../basicfunction/country.json";
+import "../assets/css/style.css"
 
 export default function Addressvalidation() {
   const app = useAppBridge();
- 
-  console.log("app=========",app.shop);
+
+  console.log("app=========", app.shop);
   const [loader, setLoader] = useState(false);
-  const [btnLoader,setBtnLoader] = useState(false);
+  const [btnLoader, setBtnLoader] = useState(false);
+  //  Toast for success and error message , loader
+  const [toastFlag, setToastFlag] = useState({
+    active: false,
+    error: false,
+    message: "",
+  });
+
+  const toastMarkup = toastFlag.active ? (
+   
+      <Toast
+        content={toastFlag.message}
+        error={toastFlag.error}
+        onDismiss={() => {
+          setToastFlag({ ...toastFlag, active: false });
+        }}
+      />
+    
+  ) : null;
+
   // const [checked, setchecked] = useState(true);
-  console.log("country",country)
+  console.log("country", country);
 
   const updatedCountries = country?.map((country, i) => {
     return {
       label: country.name,
       value: country.name,
-      
     };
   });
-  console.log("updatedCountries",updatedCountries)
+  console.log("updatedCountries", updatedCountries);
   const [addressValue, setaddressValue] = useState({
     enableAutofill: true,
     restrictShipment: true,
@@ -34,7 +63,7 @@ export default function Addressvalidation() {
     addressLimits: "Do Not Limit",
     setDefaultswitch: true,
     selectCountrySelect: "Australia",
-    limitedCountries:true,
+    limitedCountries: true,
     selectCountryDropdown: [],
   });
 
@@ -82,27 +111,26 @@ export default function Addressvalidation() {
     { label: "Argentina", value: "Argentina" },
   ];
 
-
   // const [removeCountry, setremoveCountry] = useState({
   //   limitedCountries: true,
   //   selectCountryDropdown: ["Australia"],
   // });
 
-  const deselectedOptions =  [
-      {
-        label: "Australia",
-        value: "Australia",
-      },
-      {
-        label: "Canada",
-        value: "Canada",
-      },
-      { label: "Argentina", value: "Argentina" },
-    ]
+  const deselectedOptions = [
+    {
+      label: "Australia",
+      value: "Australia",
+    },
+    {
+      label: "Canada",
+      value: "Canada",
+    },
+    { label: "Argentina", value: "Argentina" },
+  ];
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState(updatedCountries);
-console.log("options",options)
+  console.log("options", options);
   const updateText = useCallback(
     (value) => {
       setInputValue(value);
@@ -176,7 +204,7 @@ console.log("options",options)
   //   setremoveCountry({ ...removeCountry, [name]: e });
   // };
 
-  const getAddressValidation=async()=>{
+  const getAddressValidation = async () => {
     setLoader(true);
     await axios
       .get(
@@ -187,7 +215,7 @@ console.log("options",options)
         console.log("getAddressValidation", res?.data);
         setaddressValue({
           enableAutofill: res?.data[0]?.autoFill,
-          restrictShipment:res?.data[0]?.shipmentPO ,
+          restrictShipment: res?.data[0]?.shipmentPO,
           basedCharacters: res?.data[0]?.latinCharacters,
           appendZip: res?.data[0]?.postalCode,
           missingApartments: res?.data[0]?.missingApartment,
@@ -196,34 +224,41 @@ console.log("options",options)
           addressLimits: res?.data[0]?.limitNoOfCharacters,
           setDefaultswitch: res?.data[0]?.setDefaultCountry,
           selectCountrySelect: res?.data[0]?.selectDefaultCountry,
-          limitedCountries:res?.data[0]?.limitOptionCountry,
+          limitedCountries: res?.data[0]?.limitOptionCountry,
           // selectCountryDropdown:res?.data[0]?.countriesExcluded,
-        })
-        setSelectedOptions(res?.data[0]?.countriesExcluded?res?.data[0]?.countriesExcluded:[])
+        });
+        setSelectedOptions(
+          res?.data[0]?.countriesExcluded ? res?.data[0]?.countriesExcluded : []
+        );
       })
       .catch((err) => {
-        console.log("error", err);
         setLoader(false);
+        console.log("error", err);
+        setToastFlag({
+          active: true,
+          error: true,
+          message: "Something went wrong,please try again later!",
+        });
       });
-  }
+  };
 
   const addressValidationSave = async () => {
     const data = {
-      autoFill:addressValue.enableAutofill,
-      shipmentPO:addressValue.restrictShipment,
-      latinCharacters:addressValue.basedCharacters,
-      postalCode:addressValue.appendZip,
-      capitalizeAddress:addressValue.capitalizedAddress,
-      limitNoOfCharacters:addressValue.addressLimits,
-      missingApartment:addressValue.missingApartments,
-      validateApartment:addressValue.autoCompleteValidate,
-      shop:window.shop,
+      autoFill: addressValue.enableAutofill,
+      shipmentPO: addressValue.restrictShipment,
+      latinCharacters: addressValue.basedCharacters,
+      postalCode: addressValue.appendZip,
+      capitalizeAddress: addressValue.capitalizedAddress,
+      limitNoOfCharacters: addressValue.addressLimits,
+      missingApartment: addressValue.missingApartments,
+      validateApartment: addressValue.autoCompleteValidate,
+      shop: window.shop,
       // shop:"ram.myshopify.com",
-      setDefaultCountry:addressValue.setDefaultswitch,
-      selectDefaultCountry:addressValue.selectCountrySelect,
-      limitOptionCountry:addressValue.limitedCountries,
-      countriesExcluded:selectedOptions
-    }
+      setDefaultCountry: addressValue.setDefaultswitch,
+      selectDefaultCountry: addressValue.selectCountrySelect,
+      limitOptionCountry: addressValue.limitedCountries,
+      countriesExcluded: selectedOptions,
+    };
 
     setBtnLoader(true);
     await axios
@@ -234,23 +269,31 @@ console.log("options",options)
       .then((res) => {
         setBtnLoader(false);
         console.log("addressValidationSave ", res?.data);
+        setToastFlag({
+          active: true,
+          error: false,
+          message: "Save successfully",
+        });
       })
       .catch((err) => {
         setBtnLoader(false);
         console.log("error", err);
+        setToastFlag({
+          active: true,
+          error: true,
+          message: "Something went wrong,please try again later!",
+        });
       });
   };
   useEffect(() => {
-    getAddressValidation()
-  }, [])
-  
+    getAddressValidation();
+  }, []);
 
   return (
-   <>
-   {loader ? (
+    <>
+      {loader ? (
         <div
           style={{
-            height: "100vh",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -260,266 +303,276 @@ console.log("options",options)
           <Spinner accessibilityLabel="Spinner example" size="large" />
         </div>
       ) : (
-    <div>
-      <div style={{ padding: "10px" }}>
-      <LegacyCard sectioned>
-        <DisplayText size="small">
-          General Address Validation Options
-        </DisplayText>
-        <hr></hr>
-        <br></br>
-       
-        <div style={{ display: "grid", gap: "10px" }}>
-          <div
-            className=""
-            style={{
-              display: "flex",
-              gap: "10px",
-              justifyContent: "space-between",
-            }}
-          >
-            {/* <Text variant="headingXs" as="h6"> */}
-            Enable Autofill of both First and Last Name
-            {/* </Text> */}
-            <Switch   
-              onColor="#6ba4b6"
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onChange={(e) => handleChange(e, "enableAutofill")}
-              checked={addressValue?.enableAutofill}
-              className="react-switch"
-              name="checkBox1"
-            />
+        <div>
+          <div style={{ padding: "10px" }}>
+            <LegacyCard sectioned>
+              <DisplayText size="small">
+                General Address Validation Options
+              </DisplayText>
+              <hr></hr>
+              <br></br>
+
+              <div style={{ display: "grid", gap: "10px" }}>
+                <div
+                  className=""
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {/* <Text variant="headingXs" as="h6"> */}
+                  Enable Autofill of both First and Last Name
+                  {/* </Text> */}
+                  <Switch
+                    onColor="#6ba4b6"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={(e) => handleChange(e, "enableAutofill")}
+                    checked={addressValue?.enableAutofill}
+                    className="react-switch"
+                    name="checkBox1"
+                  />
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {/* <Text variant="headingXs" as="h6"> */}
+                  Restrict shipment to PO Boxes
+                  {/* </Text> */}
+                  <Switch
+                    // height={26}
+                    // width={50}
+                    onColor="#6ba4b6"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={(e) => handleChange(e, "restrictShipment")}
+                    checked={addressValue?.restrictShipment}
+                    className="react-switch"
+                  />
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {/* <Text variant="headingXs" as="h6"> */}
+                  Restrict non latin based characters
+                  {/* </Text> */}
+                  <Switch
+                    // height={26}
+                    // width={50}
+                    onColor="#6ba4b6"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={(e) => handleChange(e, "basedCharacters")}
+                    checked={addressValue?.basedCharacters}
+                    className="react-switch"
+                  />
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {/* <Text variant="headingXs" as="h6"> */}
+                  Append Zip+4 Postal Code (U.S. only)
+                  {/* </Text> */}
+                  <Switch
+                    // height={26}
+                    // width={50}
+                    onColor="#6ba4b6"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={(e) => handleChange(e, "appendZip")}
+                    checked={addressValue?.appendZip}
+                    className="react-switch"
+                  />
+                </div>
+
+                <div>
+                  <Select
+                    label="Capitalize address"
+                    placeholder="select"
+                    options={options1}
+                    onChange={(e) => {
+                      handleChange(e, "capitalizedAddress");
+                    }}
+                    value={addressValue?.capitalizedAddress}
+                  />
+                </div>
+
+                <div>
+                  <Select
+                    placeholder="select"
+                    label="Limit Numbers of Characters in Adderss Line1 and Address Line2"
+                    options={options2}
+                    onChange={(e) => {
+                      handleChange(e, "addressLimits");
+                    }}
+                    value={addressValue.addressLimits}
+                  />
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {/* <Text variant="headingXs" as="h6"> */}
+                  Check for Missing Apartments & Stuites
+                  {/* </Text> */}
+                  <Switch
+                    // height={26}
+                    // width={50}
+                    onColor="#6ba4b6"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={(e) => handleChange(e, "missingApartments")}
+                    checked={addressValue?.missingApartments}
+                    className="react-switch"
+                  />
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {/* <Text variant="headingXs" as="h6"> */}
+                  Autocomplete and Validate Apartment & Suites
+                  {/* </Text> */}
+                  <Switch
+                    onColor="#6ba4b6"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={(e) => handleChange(e, "autoCompleteValidate")}
+                    checked={addressValue?.autoCompleteValidate}
+                    className="react-switch"
+                  />
+                </div>
+              </div>
+            </LegacyCard>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            {/* <Text variant="headingXs" as="h6"> */}
-            Restrict shipment to PO Boxes
-            {/* </Text> */}
-            <Switch
-              // height={26}
-              // width={50}
-              onColor="#6ba4b6"
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onChange={(e) => handleChange(e, "restrictShipment")}
-              checked={addressValue?.restrictShipment}
-              className="react-switch"
-            />
+          <div style={{ padding: "10px" }}>
+            <LegacyCard sectioned>
+              <DisplayText size="small">Default Shipping Country</DisplayText>
+              <hr></hr>
+              <br></br>
+              <div>
+                <div
+                  className=""
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {/* <Text variant="headingXs" as="h6"> */}
+                  Set Default Country
+                  {/* </Text> */}
+                  <Switch
+                    // height={26}
+                    // width={50}
+                    onColor="#6ba4b6"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={(e) => handleChange(e, "setDefaultswitch")}
+                    checked={addressValue.setDefaultswitch}
+                    className="react-switch"
+                    name="setDefaultswitch"
+                  />
+                </div>
+                <div>
+                  <Select
+                    placeholder="select"
+                    label="Select Default Country"
+                    options={options1}
+                    onChange={(e) => {
+                      handleChange(e, "selectCountrySelect");
+                    }}
+                    value={addressValue.selectCountrySelect}
+                  />
+                </div>
+              </div>
+            </LegacyCard>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            {/* <Text variant="headingXs" as="h6"> */}
-            Restrict non latin based characters
-            {/* </Text> */}
-            <Switch
-              // height={26}
-              // width={50}
-              onColor="#6ba4b6"
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onChange={(e) => handleChange(e, "basedCharacters")}
-              checked={addressValue?.basedCharacters}
-              className="react-switch"
-            />
-          </div>
+          <div style={{ padding: "10px" }}>
+            <LegacyCard sectioned>
+              <DisplayText size="small">
+                Remove The Following Countries from the Country Dropdown List
+              </DisplayText>
+              <hr></hr>
+              <br></br>
 
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            {/* <Text variant="headingXs" as="h6"> */}
-            Append Zip+4 Postal Code (U.S. only)
-            {/* </Text> */}
-            <Switch
-              // height={26}
-              // width={50}
-              onColor="#6ba4b6"
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onChange={(e) => handleChange(e, "appendZip")}
-              checked={addressValue?.appendZip}
-              className="react-switch"
-            />
-          </div>
-
-          <div>
-            <Select
-              label="Capitalize address"
-              placeholder="select"
-              options={options1}
-              onChange={(e)=>{handleChange(e,"capitalizedAddress")}}
-              value={addressValue?.capitalizedAddress}
-            />
-          </div>
-
-          <div>
-            <Select
-             placeholder="select"
-              label="Limit Numbers of Characters in Adderss Line1 and Address Line2"
-              options={options2}
-              onChange={(e)=>{handleChange(e,"addressLimits")}}
-              value={addressValue.addressLimits}
-            />
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            {/* <Text variant="headingXs" as="h6"> */}
-            Check for Missing Apartments & Stuites
-            {/* </Text> */}
-            <Switch
-              // height={26}
-              // width={50}
-              onColor="#6ba4b6"
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onChange={(e) => handleChange(e, "missingApartments")}
-              checked={addressValue?.missingApartments}
-              className="react-switch"
-            />
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            {/* <Text variant="headingXs" as="h6"> */}
-              Autocomplete and Validate Apartment & Suites
-            {/* </Text> */}
-            <Switch
-              onColor="#6ba4b6"
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onChange={(e) => handleChange(e, "autoCompleteValidate")}
-              checked={addressValue?.autoCompleteValidate}
-              className="react-switch"
-            />
+              <div>
+                <div
+                  className=""
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  Limit options Shown in Country Dropdown
+                  <Switch
+                    onColor="#6ba4b6"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    onChange={(e) => handleChange(e, "limitedCountries")}
+                    checked={addressValue.limitedCountries}
+                    className="react-switch"
+                    name="limitedCountries"
+                  />
+                </div>
+                <div style={{ height: "auto" }}>
+                  <Autocomplete
+                    allowMultiple
+                    options={options}
+                    selected={selectedOptions}
+                    textField={textField}
+                    onSelect={setSelectedOptions}
+                    listTitle="Suggested Tags"
+                  />
+                </div>
+              </div>
+              <br />
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button
+                  primary
+                  loading={btnLoader}
+                  onClick={() => addressValidationSave()}
+                >
+                  Save
+                </Button>
+              </div>
+            </LegacyCard>
           </div>
         </div>
-        </LegacyCard>
-      </div>
-
-      <div style={{ padding: "10px" }}>
-      <LegacyCard sectioned>
-          <DisplayText size="small">Default Shipping Country</DisplayText>
-          <hr></hr>
-          <br></br>
-          <div>
-            <div
-              className=""
-              style={{
-                display: "flex",
-                gap: "10px",
-                justifyContent: "space-between",
-              }}
-            >
-              {/* <Text variant="headingXs" as="h6"> */}
-              Set Default Country
-              {/* </Text> */}
-              <Switch
-                // height={26}
-                // width={50}
-                onColor="#6ba4b6"
-                uncheckedIcon={false}
-                checkedIcon={false}
-                onChange={(e) => handleChange(e, "setDefaultswitch")}
-                checked={addressValue.setDefaultswitch}
-                className="react-switch"
-                name="setDefaultswitch"
-              />
-            </div>
-            <div>
-              <Select
-              placeholder="select"
-                label="Select Default Country"
-                options={options1}
-                onChange={(e)=>{handleChange(e,"selectCountrySelect")}}
-                value={addressValue.selectCountrySelect}
-              />
-            </div>
-          </div>
-       </LegacyCard>  
-        </div>
-
-
-        <div style={{ padding: "10px" }}>
-        <LegacyCard sectioned>
-          <DisplayText size="small">
-            Remove The Following Countries from the Country Dropdown List
-          </DisplayText>
-          <hr></hr>
-          <br></br>
-          
-          <div>
-            <div
-              className=""
-              style={{
-                display: "flex",
-                gap: "10px",
-                justifyContent: "space-between",
-              }}
-            >
-       
-              Limit options Shown in Country Dropdown
-           
-              <Switch
-                
-                onColor="#6ba4b6"
-                uncheckedIcon={false}
-                checkedIcon={false}
-                onChange={(e) => handleChange(e, "limitedCountries")}
-                checked={addressValue.limitedCountries}
-                className="react-switch"
-                name="limitedCountries"
-              />
-            </div>
-            <div style={{ height: "auto" }}>
-              <Autocomplete
-                allowMultiple
-                options={options}
-                selected={selectedOptions}
-                textField={textField}
-                onSelect={setSelectedOptions}
-                listTitle="Suggested Tags"
-              />
-            </div>
-          </div>
-          <br />
-          <Button loading={btnLoader} onClick={()=>addressValidationSave()}>Save</Button>
-          </LegacyCard>
-          
-        </div>
-    </div>
-    )}
+      )}
+      {toastMarkup}
     </>
   );
 }

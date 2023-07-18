@@ -126,7 +126,7 @@ export default function TopBarcomponent() {
 
   return (
     <>
-      <div style={{ height: "100px" }}>
+      <div style={{ height: "70px" }}>
         <Frame topBar={topBarMarkup} logo={logo} />
       </div>
     </>

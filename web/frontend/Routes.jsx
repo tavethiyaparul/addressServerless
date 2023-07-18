@@ -1,7 +1,7 @@
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
 
 
-import setting from "./pages/Setting";
+import setting from "./pages/settingPage";
 /**
  * File-based routing.
  * @desc File-based routing that uses React Router under the hood.
