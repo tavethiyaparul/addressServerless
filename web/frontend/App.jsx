@@ -13,26 +13,25 @@ export default function App() {
   // Any .tsx or .jsx files in /pages will become a route
   // See documentation for <Routes /> for more info
 console.log("================================",location?.href)
-let condition =location?.href.includes("/api/auth_callback")
-const basename = condition ? '/api/auth_callback' : '';
-console.log("dfghjm",basename)
+// let condition =location?.href.includes("/api/auth_callback")
+// const basename = condition ? '/api/auth_callback' : '';
+// console.log("dfghjm",basename)label: t("NavigationMenu.setting")
   const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
-  // const basePath = '/api/auth_callback' || '/api/app'   basename={basePath}
+  const basePath = '/api/auth_callback' || '/api/app' 
  
   const { t } = useTranslation();
 
   return (
     <PolarisProvider>
-      <BrowserRouter basename={basename}>
+      <BrowserRouter >
         <AppBridgeProvider>
           <QueryProvider>
             <NavigationMenu
-              navigationLinks={[
-                {
-                  label: t("NavigationMenu.setting"),
-                  destination: "/setting",
-                },
-              ]}
+            navigationLinks={[
+              {
+                destination: "/",
+              },
+            ]}
             />
             <Routes pages={pages} />
           </QueryProvider>

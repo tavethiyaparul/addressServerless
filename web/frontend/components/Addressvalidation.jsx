@@ -1,10 +1,8 @@
 import {
   Autocomplete,
   Spinner,
-  DisplayText,
   LegacyStack,
   Tag,
-  Text,
   Button,
   LegacyCard,
   Toast,
@@ -15,14 +13,17 @@ import { Select } from "@shopify/polaris";
 import axios from "axios";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import country from "../basicfunction/country.json";
-import "../assets/css/style.css"
+import "../assets/css/style.css";
 
 export default function Addressvalidation() {
   const app = useAppBridge();
 
-  console.log("app=========", app.shop);
+  console.log("app shop", app.shop);
+
+  //loader
   const [loader, setLoader] = useState(false);
   const [btnLoader, setBtnLoader] = useState(false);
+
   //  Toast for success and error message , loader
   const [toastFlag, setToastFlag] = useState({
     active: false,
@@ -31,27 +32,23 @@ export default function Addressvalidation() {
   });
 
   const toastMarkup = toastFlag.active ? (
-   
-      <Toast
-        content={toastFlag.message}
-        error={toastFlag.error}
-        onDismiss={() => {
-          setToastFlag({ ...toastFlag, active: false });
-        }}
-      />
-    
+    <Toast
+      content={toastFlag.message}
+      error={toastFlag.error}
+      onDismiss={() => {
+        setToastFlag({ ...toastFlag, active: false });
+      }}
+    />
   ) : null;
 
-  // const [checked, setchecked] = useState(true);
-  console.log("country", country);
-
+  //get json country
   const updatedCountries = country?.map((country, i) => {
     return {
       label: country.name,
       value: country.name,
     };
   });
-  console.log("updatedCountries", updatedCountries);
+
   const [addressValue, setaddressValue] = useState({
     enableAutofill: true,
     restrictShipment: true,
@@ -69,15 +66,9 @@ export default function Addressvalidation() {
 
   const handleChange = (e, name) => {
     setaddressValue({ ...addressValue, [name]: e });
-    // if (addressValue.checkBox2 == true) {
-    //   setaddressValue({ ...addressValue, checkBox2: false });
-    // } else {
-    //   setaddressValue({ ...addressValue, checkBox2: true });
-    // }
   };
-  console.log("checked", addressValue);
 
-  const options1 = [
+  const capitalizeAddress = [
     {
       label: "Capitalize Addresses (First Character Only)",
       value: "CapitalizeAddress",
@@ -86,9 +77,11 @@ export default function Addressvalidation() {
       label: "Uppercase Addresses",
       value: "UppercaseAddress",
     },
-    { label: "Lowercase Addresses", value: "LowercaseAddress" },
+    { label: "Lowercase Addresses",
+      value: "LowercaseAddress" 
+    },
   ];
-  const options2 = [
+  const limitChar = [
     {
       label: "Do Not Limit",
       value: "Do Not Limit",
@@ -99,38 +92,10 @@ export default function Addressvalidation() {
     },
   ];
 
-  const options11 = [
-    {
-      label: "Australia",
-      value: "Australia",
-    },
-    {
-      label: "Canada",
-      value: "Canada",
-    },
-    { label: "Argentina", value: "Argentina" },
-  ];
-
-  // const [removeCountry, setremoveCountry] = useState({
-  //   limitedCountries: true,
-  //   selectCountryDropdown: ["Australia"],
-  // });
-
-  const deselectedOptions = [
-    {
-      label: "Australia",
-      value: "Australia",
-    },
-    {
-      label: "Canada",
-      value: "Canada",
-    },
-    { label: "Argentina", value: "Argentina" },
-  ];
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState(updatedCountries);
-  console.log("options", options);
+ 
   const updateText = useCallback(
     (value) => {
       setInputValue(value);
@@ -186,24 +151,7 @@ export default function Addressvalidation() {
     />
   );
 
-  const options123 = [
-    {
-      label: "Australia",
-      value: "Australia",
-    },
-    {
-      label: "Canada",
-      value: "Canada",
-    },
-    { label: "Argentina", value: "Argentina" },
-  ];
-
-  // const handleChangeRemove = (e, name) => {
-  //   console.log("checked", removeCountry, "ev ==", e, name);
-
-  //   setremoveCountry({ ...removeCountry, [name]: e });
-  // };
-
+    //get  address validation api
   const getAddressValidation = async () => {
     setLoader(true);
     await axios
@@ -242,6 +190,7 @@ export default function Addressvalidation() {
       });
   };
 
+  //set address validation api
   const addressValidationSave = async () => {
     const data = {
       autoFill: addressValue.enableAutofill,
@@ -285,6 +234,7 @@ export default function Addressvalidation() {
         });
       });
   };
+
   useEffect(() => {
     getAddressValidation();
   }, []);
@@ -306,9 +256,11 @@ export default function Addressvalidation() {
         <div>
           <div style={{ padding: "10px" }}>
             <LegacyCard sectioned>
-              <DisplayText size="small">
+             
+              <p style={{fontSize:"20px"}}>
                 General Address Validation Options
-              </DisplayText>
+                </p>
+           
               <hr></hr>
               <br></br>
 
@@ -321,9 +273,7 @@ export default function Addressvalidation() {
                     justifyContent: "space-between",
                   }}
                 >
-                  {/* <Text variant="headingXs" as="h6"> */}
                   Enable Autofill of both First and Last Name
-                  {/* </Text> */}
                   <Switch
                     onColor="#6ba4b6"
                     uncheckedIcon={false}
@@ -343,12 +293,8 @@ export default function Addressvalidation() {
                     alignItems: "center",
                   }}
                 >
-                  {/* <Text variant="headingXs" as="h6"> */}
                   Restrict shipment to PO Boxes
-                  {/* </Text> */}
                   <Switch
-                    // height={26}
-                    // width={50}
                     onColor="#6ba4b6"
                     uncheckedIcon={false}
                     checkedIcon={false}
@@ -366,12 +312,8 @@ export default function Addressvalidation() {
                     justifyContent: "space-between",
                   }}
                 >
-                  {/* <Text variant="headingXs" as="h6"> */}
                   Restrict non latin based characters
-                  {/* </Text> */}
                   <Switch
-                    // height={26}
-                    // width={50}
                     onColor="#6ba4b6"
                     uncheckedIcon={false}
                     checkedIcon={false}
@@ -389,12 +331,8 @@ export default function Addressvalidation() {
                     justifyContent: "space-between",
                   }}
                 >
-                  {/* <Text variant="headingXs" as="h6"> */}
                   Append Zip+4 Postal Code (U.S. only)
-                  {/* </Text> */}
                   <Switch
-                    // height={26}
-                    // width={50}
                     onColor="#6ba4b6"
                     uncheckedIcon={false}
                     checkedIcon={false}
@@ -408,7 +346,7 @@ export default function Addressvalidation() {
                   <Select
                     label="Capitalize address"
                     placeholder="select"
-                    options={options1}
+                    options={capitalizeAddress}
                     onChange={(e) => {
                       handleChange(e, "capitalizedAddress");
                     }}
@@ -420,7 +358,7 @@ export default function Addressvalidation() {
                   <Select
                     placeholder="select"
                     label="Limit Numbers of Characters in Adderss Line1 and Address Line2"
-                    options={options2}
+                    options={limitChar}
                     onChange={(e) => {
                       handleChange(e, "addressLimits");
                     }}
@@ -436,12 +374,8 @@ export default function Addressvalidation() {
                     justifyContent: "space-between",
                   }}
                 >
-                  {/* <Text variant="headingXs" as="h6"> */}
                   Check for Missing Apartments & Stuites
-                  {/* </Text> */}
                   <Switch
-                    // height={26}
-                    // width={50}
                     onColor="#6ba4b6"
                     uncheckedIcon={false}
                     checkedIcon={false}
@@ -459,9 +393,7 @@ export default function Addressvalidation() {
                     justifyContent: "space-between",
                   }}
                 >
-                  {/* <Text variant="headingXs" as="h6"> */}
                   Autocomplete and Validate Apartment & Suites
-                  {/* </Text> */}
                   <Switch
                     onColor="#6ba4b6"
                     uncheckedIcon={false}
@@ -477,7 +409,7 @@ export default function Addressvalidation() {
 
           <div style={{ padding: "10px" }}>
             <LegacyCard sectioned>
-              <DisplayText size="small">Default Shipping Country</DisplayText>
+            <p style={{fontSize:"20px"}}>Default Shipping Country </p>
               <hr></hr>
               <br></br>
               <div>
@@ -489,12 +421,8 @@ export default function Addressvalidation() {
                     justifyContent: "space-between",
                   }}
                 >
-                  {/* <Text variant="headingXs" as="h6"> */}
                   Set Default Country
-                  {/* </Text> */}
                   <Switch
-                    // height={26}
-                    // width={50}
                     onColor="#6ba4b6"
                     uncheckedIcon={false}
                     checkedIcon={false}
@@ -508,7 +436,7 @@ export default function Addressvalidation() {
                   <Select
                     placeholder="select"
                     label="Select Default Country"
-                    options={options1}
+                    options={capitalizeAddress}
                     onChange={(e) => {
                       handleChange(e, "selectCountrySelect");
                     }}
@@ -521,9 +449,9 @@ export default function Addressvalidation() {
 
           <div style={{ padding: "10px" }}>
             <LegacyCard sectioned>
-              <DisplayText size="small">
+            <p style={{fontSize:"20px"}}>
                 Remove The Following Countries from the Country Dropdown List
-              </DisplayText>
+                </p>
               <hr></hr>
               <br></br>
 

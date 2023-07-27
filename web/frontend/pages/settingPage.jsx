@@ -1,12 +1,7 @@
 import {
-  LegacyCard,
-  Text,
-  Page,
   TextField,
-  DisplayText,
   Spinner,
   Button,
-  Layout,
   Toast,
 } from "@shopify/polaris";
 import React, { useEffect, useState } from "react";
@@ -14,7 +9,7 @@ import ReactSwitch from "react-switch";
 import ColorModal from "../components/ColorModal";
 import axios from "axios";
 import { useAppBridge } from "@shopify/app-bridge-react";
-import TopBarcomponent from "../components/TopBarcomponent";
+
 
 const setting = () => {
   const app = useAppBridge();
@@ -36,7 +31,6 @@ const setting = () => {
     />
   ) : null;
 
-  console.log("app", app.hostOrigin.split("//")[1]);
 
   const [input, setInput] = useState({
     text_color: "",
@@ -59,6 +53,7 @@ const setting = () => {
     temp[key] = val;
     setInput(temp);
   };
+
   const [script, setScript] = useState(false);
   const [colorPicker, setColorPicker] = useState({
     textColor: false,
@@ -75,15 +70,13 @@ const setting = () => {
     setValue({ ...value, [name]: e });
   };
 
-  console.log("script ______________________________", script);
+  //get script api call
   const getScript = async () => {
     await axios
       .get(
         `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/script?shop=${window.shop}`
       )
       .then((res) => {
-        console.log("getScript", res?.data?.[0]?.scriptStatus);
-
         setScript(res?.data?.[0]?.scriptStatus);
       })
       .catch((err) => {
@@ -96,8 +89,8 @@ const setting = () => {
       });
   };
 
+  //create script api call
   const scriptSave = async (e) => {
-    console.log("cvbnm,================.", e);
     setScript(e);
     await axios
       .post(
@@ -105,8 +98,12 @@ const setting = () => {
         { shop: window.shop, scriptStatus: e }
       )
       .then((res) => {
-        // setScript(res.data.scriptStatus);
         console.log("scriptSave", res.data.scriptStatus);
+        setToastFlag({
+          active: true,
+          error: false,
+          message: "Script saved successfully",
+        });
       })
       .catch((err) => {
         console.log("error", err);
@@ -118,6 +115,7 @@ const setting = () => {
       });
   };
 
+  //get setting api
   const getSetting = async () => {
     setLoader(true);
     await axios
@@ -150,6 +148,7 @@ const setting = () => {
       });
   };
 
+  //create seeting api
   const settingSave = async () => {
     const data = {
       size: value?.size,
@@ -194,11 +193,9 @@ const setting = () => {
   useEffect(() => {
     getSetting();
   }, []);
+  
   return (
     <>
-      {/* <Layout>
-          <TopBarcomponent />
-        </Layout> */}
       {loader ? (
         <div
           style={{
@@ -212,164 +209,146 @@ const setting = () => {
         </div>
       ) : (
         <div>
-          <center>
-            {/* <p
-                style={{
-                  fontSize: "25px",
-                  marginBottom: "30px",
-                  marginTop: "10px",
-                }}
-              >
-                Display Setting
-              </p> */}
-          </center>
-          <LegacyCard sectioned>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <p style={{ fontSize: "14px" }}>Script Tag Enable and Disable</p>
-              <ReactSwitch
-                onColor="#6ba4b6"
-                uncheckedIcon
-                checkedIcon
-                onChange={(e) => scriptSave(e)}
-                checked={script ? script : false}
-              />
-            </div>
-            <br />
-            <div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  width: "50%",
-                  position: "relative",
-                }}
-              >
-                <p style={{ width: "39%" }}>Background Color </p>
-                <div
-                  style={{
-                    width: "70px",
-                    cursor: "pointer",
-                    height: "34px",
-                    position: "relative",
-                    backgroundColor: input?.background_color,
-                    "&:hover": {
-                      backgroundColor: input?.background_color,
-                      boxShadow: "none",
-                    },
-                    borderRadius: "8px",
-                    border: "1px solid #000",
-                  }}
-                  onClick={() => {
-                    handleChangeColorPicker("backgroundColor", true);
-                  }}
-                >
-                  {colorPicker?.backgroundColor && (
-                    <ColorModal
-                      colorKey={"background_color"}
-                      title={"Choose Text Color"}
-                      activeVal={colorPicker?.backgroundColor}
-                      handleChange={() => {
-                        handleChangeColorPicker("backgroundColor", false);
-                      }}
-                      inputValue={input?.background_color}
-                      handleChangeInputValue={handleChangeInputValue}
-                    />
-                  )}
-                </div>
-              </div>
-              <br />
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  width: "50%",
-                  position: "relative",
-                }}
-              >
-                <p style={{ width: "39%" }}>Text Color </p>
-                <div
-                  style={{
-                    width: "70px",
-                    cursor: "pointer",
-                    height: "34px",
-                    position: "relative",
-                    backgroundColor: input?.text_color,
-                    "&:hover": {
-                      backgroundColor: input?.text_color,
-                      boxShadow: "none",
-                    },
-                    borderRadius: "8px",
-                    border: "1px solid #000",
-                  }}
-                  onClick={() => {
-                    handleChangeColorPicker("textColor", true);
-                  }}
-                >
-                  {colorPicker?.textColor && (
-                    <ColorModal
-                      colorKey={"text_color"}
-                      title={"Choose Text Color"}
-                      activeVal={colorPicker?.textColor}
-                      handleChange={() => {
-                        handleChangeColorPicker("textColor", false);
-                      }}
-                      inputValue={input?.text_color}
-                      handleChangeInputValue={handleChangeInputValue}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-            <br />
-            <TextField
-              label="Size"
-              value={value?.size}
-              onChange={(e) => handleChangeEvent(e, "size")}
-              autoComplete="off"
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p style={{ fontSize: "14px" }}>Script Tag Enable and Disable</p>
+            <ReactSwitch
+              onColor="#6ba4b6"
+              uncheckedIcon
+              checkedIcon
+              onChange={(e) => scriptSave(e)}
+              checked={script ? script : false}
             />
-            <br />
-            <TextField
-              label="Before Title Text"
-              value={value?.beforeTitle}
-              onChange={(e) => handleChangeEvent(e, "beforeTitle")}
-              autoComplete="off"
-            />
-            <br />
-            <TextField
-              label="After Title Text"
-              value={value?.afterTitle}
-              onChange={(e) => handleChangeEvent(e, "afterTitle")}
-              autoComplete="off"
-            />
-            <br />
-            <TextField
-              label="Margin Top"
-              value={value?.topMargin}
-              onChange={(e) => handleChangeEvent(e, "topMargin")}
-              autoComplete="off"
-            />
-            <br />
-            <TextField
-              label="Margin Bottom"
-              value={value?.bottomMargin}
-              onChange={(e) => handleChangeEvent(e, "bottomMargin")}
-              autoComplete="off"
-            />
-            <br />
-            {/* <button
-              style={{ background: "#6ba4b6", width: "60px", height: "35px" }}
-              onClick={() => settingSave()}
+          </div>
+          <br />
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                width: "50%",
+                position: "relative",
+              }}
             >
-              Save
-            </button> */}
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <Button loading={btnLoader} primary onClick={() => settingSave()}>
-                save
-              </Button>
+              <p style={{ width: "39%" }}>Background Color </p>
+              <div
+                style={{
+                  width: "70px",
+                  cursor: "pointer",
+                  height: "34px",
+                  position: "relative",
+                  backgroundColor: input?.background_color,
+                  "&:hover": {
+                    backgroundColor: input?.background_color,
+                    boxShadow: "none",
+                  },
+                  borderRadius: "8px",
+                  border: "1px solid #000",
+                }}
+                onClick={() => {
+                  handleChangeColorPicker("backgroundColor", true);
+                }}
+              >
+                {colorPicker?.backgroundColor && (
+                  <ColorModal
+                    colorKey={"background_color"}
+                    title={"Choose Text Color"}
+                    activeVal={colorPicker?.backgroundColor}
+                    handleChange={() => {
+                      handleChangeColorPicker("backgroundColor", false);
+                    }}
+                    inputValue={input?.background_color}
+                    handleChangeInputValue={handleChangeInputValue}
+                  />
+                )}
+              </div>
             </div>
-          </LegacyCard>
+            <br />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                width: "50%",
+                position: "relative",
+              }}
+            >
+              <p style={{ width: "39%" }}>Text Color </p>
+              <div
+                style={{
+                  width: "70px",
+                  cursor: "pointer",
+                  height: "34px",
+                  position: "relative",
+                  backgroundColor: input?.text_color,
+                  "&:hover": {
+                    backgroundColor: input?.text_color,
+                    boxShadow: "none",
+                  },
+                  borderRadius: "8px",
+                  border: "1px solid #000",
+                }}
+                onClick={() => {
+                  handleChangeColorPicker("textColor", true);
+                }}
+              >
+                {colorPicker?.textColor && (
+                  <ColorModal
+                    colorKey={"text_color"}
+                    title={"Choose Text Color"}
+                    activeVal={colorPicker?.textColor}
+                    handleChange={() => {
+                      handleChangeColorPicker("textColor", false);
+                    }}
+                    inputValue={input?.text_color}
+                    handleChangeInputValue={handleChangeInputValue}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          <br />
+          <TextField
+            label="Size"
+            value={value?.size}
+            onChange={(e) => handleChangeEvent(e, "size")}
+            autoComplete="off"
+          />
+          <br />
+          <TextField
+            label="Before Title Text"
+            value={value?.beforeTitle}
+            onChange={(e) => handleChangeEvent(e, "beforeTitle")}
+            autoComplete="off"
+          />
+          <br />
+          <TextField
+            label="After Title Text"
+            value={value?.afterTitle}
+            onChange={(e) => handleChangeEvent(e, "afterTitle")}
+            autoComplete="off"
+          />
+          <br />
+          <TextField
+            label="Margin Top"
+            value={value?.topMargin}
+            onChange={(e) => handleChangeEvent(e, "topMargin")}
+            autoComplete="off"
+          />
+          <br />
+          <TextField
+            label="Margin Bottom"
+            value={value?.bottomMargin}
+            onChange={(e) => handleChangeEvent(e, "bottomMargin")}
+            autoComplete="off"
+          />
+          <br />
+
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button loading={btnLoader} primary onClick={() => settingSave()}>
+              save
+            </Button>
+          </div>
         </div>
       )}
       {toastMarkup}

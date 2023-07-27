@@ -14,17 +14,12 @@ import {
   Frame,
   FooterHelp,
 } from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
 import { useTranslation, Trans } from "react-i18next";
 
 import { trophyImage } from "../assets";
-// import { ProductsCard } from "../components";
-// import TabComponents from "../components/TabComponents";
 import TopBarcomponent from "../components/TopBarcomponent";
 import Addressvalidation from "../components/Addressvalidation";
 import Setting from "./settingPage";
-import DefaultCountry from "../components/DefaultCountry";
-import RemoveCountry from "../components/RemoveCountry";
 import { useCallback, useState } from "react";
 
 export default function HomePage() {
@@ -96,15 +91,15 @@ export default function HomePage() {
         }}
       >
         <FooterHelp>
-          For support, suggestion and app related queries, feel free to email us{" "}
+          For support, suggestion and app related queries, feel free to email us on {" "}
           <Link
             external
             onClick={() =>
-              typeof window !== undefined && window.open("dlc@addrexx.com", "_blank")
+              typeof window !== undefined && window.open("mailto:dlc@addrexx.com", "_blank")
             }
           >
             {" "}
-            here
+            dlc@addrexx.com
           </Link>
         </FooterHelp>
       </div>

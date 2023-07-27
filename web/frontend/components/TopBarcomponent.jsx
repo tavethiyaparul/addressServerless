@@ -38,7 +38,7 @@ export default function TopBarcomponent() {
     topBarSource:
       "https://addrexx.com/wp-content/uploads/2018/04/logo_100_200_042818.png",
     url: "#",
-    accessibilityLabel: "Jaded Pixel",
+    accessibilityLabel: "addrexx",
   };
 
   const userMenuMarkup = (
@@ -52,7 +52,7 @@ export default function TopBarcomponent() {
         },
       ]}
       name="DR@gmail.com"
-      // detail="Jaded Pixel"
+      // detail="addrexx"
       initials="D"
       open={isUserMenuOpen}
       onToggle={toggleIsUserMenuOpen}
@@ -101,21 +101,9 @@ export default function TopBarcomponent() {
   const topBarMarkup = (
     <TopBar
       showNavigationToggle
-      // userMenu={userMenuMarkup}
-      // secondaryMenu={secondaryMenuMarkup}
       searchResultsVisible={isSearchActive}
       searchField={
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          {/* <div>
-            <h2>
-              <b>Dashboard</b>
-            </h2>
-          </div> */}
-          {/* <div>
-            <h2>
-              <b>Address Config</b>
-            </h2>
-          </div> */}
         </div>
       }
       searchResults={searchResultsMarkup}
