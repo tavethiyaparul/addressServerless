@@ -23,7 +23,7 @@ console.log("================================",location?.href)
 
   return (
     <PolarisProvider>
-      <BrowserRouter >
+      <BrowserRouter basename={basePath}>
         <AppBridgeProvider>
           <QueryProvider>
             <NavigationMenu
