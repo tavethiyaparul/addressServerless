@@ -17,7 +17,7 @@ console.log("================================",location?.href)
 // const basename = condition ? '/api/auth_callback' : '';
 // console.log("dfghjm",basename)label: t("NavigationMenu.setting")
   const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
-  const basePath = '/api/auth_callback' || '/api/app' 
+  const basePath = '/api/callback' || '/api/app' 
  
   const { t } = useTranslation();
 
