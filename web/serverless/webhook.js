@@ -103,6 +103,7 @@ async function orderCreate(topic, shop, orderdata) {
       console.log("data", data);
       const AppSubscriptionId = data?.Items[0]?.payment_charge_id;
       const accessToken = data?.Items[0]?.access_token;
+
       const orderId = order.id;
 
       console.log("accessToken", accessToken);
@@ -156,7 +157,30 @@ async function orderCreate(topic, shop, orderdata) {
         var updatedDiffAmount = updatedCappedAmount - updatedBalanceAmount;
         console.log("updatedDiffAmount", updatedDiffAmount);
 
-        var amountCharge = process.env.AMOUNTCHARGE;
+        // if usage charge exists in Db then used this one other wise env
+        const getShopIdParams = {
+          TableName: "displaySetting",
+          FilterExpression: "shop = :shopValue",
+          ExpressionAttributeValues: {
+            ":shopValue": shop,
+          },
+        };
+        let usageCharge;
+        try {
+          const data = await documentClient.scan(getShopIdParams).promise();
+          console.log("data=================", data);
+          usageCharge = data?.Items[0]?.usageChargePrice;
+        } catch (err) {
+          console.log("error,", err);
+        }
+        console.log("usageCharge", usageCharge);
+        var amountCharge;
+        if (usageCharge) {
+          amountCharge = usageCharge;
+        } else {
+          amountCharge = process.env.AMOUNTCHARGE;
+        }
+        console.log("amountCharge", amountCharge);
         // Number(
         //   Number(careerCharge) + Number(orderTotalCost)
         // ).toFixed(2);

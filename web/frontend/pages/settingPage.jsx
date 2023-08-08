@@ -37,6 +37,7 @@ const setting = () => {
     background_color: "",
   });
 
+  
   const [value, setValue] = useState({
     size: "",
     afterTitle: "",
@@ -44,6 +45,7 @@ const setting = () => {
     beforeTitle: "",
     topMargin: "",
     shop: "",
+    usageChargePrice:"",
   });
 
   const [loader, setLoader] = useState(false);
@@ -72,9 +74,12 @@ const setting = () => {
 
   //get script api call
   const getScript = async () => {
+    const headers = {
+      'x-api-key': 'WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0' 
+    };
     await axios
       .get(
-        `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/script?shop=${window.shop}`
+        `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/script?shop=${window.shop}`,{ headers }
       )
       .then((res) => {
         setScript(res?.data?.[0]?.scriptStatus);
@@ -92,10 +97,14 @@ const setting = () => {
   //create script api call
   const scriptSave = async (e) => {
     setScript(e);
+    const headers = {
+      'x-api-key': 'WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0' 
+    };
     await axios
       .post(
         `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/script`,
-        { shop: window.shop, scriptStatus: e }
+        { shop: window.shop, scriptStatus: e },
+        { headers }
       )
       .then((res) => {
         console.log("scriptSave", res.data.scriptStatus);
@@ -118,9 +127,12 @@ const setting = () => {
   //get setting api
   const getSetting = async () => {
     setLoader(true);
+    const headers = {
+      'x-api-key': 'WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0' 
+    };
     await axios
       .get(
-        `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/setting?shop=${window.shop}`
+        `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/setting?shop=${window.shop}`,{ headers }
       )
       .then((res) => {
         setLoader(false);
@@ -131,6 +143,7 @@ const setting = () => {
           bottomMargin: res?.data[0]?.bottomMargin,
           beforeTitle: res?.data[0]?.beforeTitle,
           topMargin: res?.data[0]?.topMargin,
+          usageChargePrice:res?.data[0]?.usageChargePrice
         });
         setInput({
           text_color: res?.data[0]?.textColor,
@@ -159,12 +172,17 @@ const setting = () => {
       textColor: input?.text_color,
       backColor: input?.background_color,
       shop: window.shop,
+      usageChargePrice:value?.usageChargePrice
     };
     setBtnLoader(true);
+    const headers = {
+      'x-api-key': 'WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0' 
+    };
     await axios
       .post(
         `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/setting`,
-        data
+        data,
+        { headers }
       )
       .then((res) => {
         setBtnLoader(false);
@@ -193,7 +211,7 @@ const setting = () => {
   useEffect(() => {
     getSetting();
   }, []);
-  
+
   return (
     <>
       {loader ? (
@@ -219,6 +237,13 @@ const setting = () => {
               checked={script ? script : false}
             />
           </div>
+          <br />
+          <TextField
+            label="Usage Charge Price"
+            value={value?.usageChargePrice}
+            onChange={(e) => handleChangeEvent(e, "usageChargePrice")}
+            autoComplete="off"
+          />
           <br />
           <div>
             <div

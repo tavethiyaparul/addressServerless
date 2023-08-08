@@ -13,6 +13,7 @@ exports.handler = async (event) => {
   console.log("event", JSON.stringify(event));
   console.log("event.httpMethod", event.httpMethod);
   const httpMethod = event.httpMethod;
+
   let allowedOrigins = "";
 
   const headers = event.headers || {};
@@ -61,24 +62,23 @@ exports.handler = async (event) => {
       const putParams = {
         TableName: "displaySetting",
         Item: {
-          backColor: bodyData.backColor,
-          size: bodyData.size,
-          beforeTitle: bodyData.beforeTitle,
-          afterTitle: bodyData.afterTitle,
-          textColor: bodyData.textColor,
-          topMargin: bodyData.topMargin,
-          bottomMargin: bodyData.bottomMargin,
+          usageChargePrice: bodyData?.usageChargePrice,
+          backColor: bodyData?.backColor,
+          size: bodyData?.size,
+          beforeTitle: bodyData?.beforeTitle,
+          afterTitle: bodyData?.afterTitle,
+          textColor: bodyData?.textColor,
+          topMargin: bodyData?.topMargin,
+          bottomMargin: bodyData?.bottomMargin,
           created_at: new Date().getTime(),
           updated_at: new Date().getTime(),
-          shop: bodyData.shop,
-          scriptId: bodyData.scriptId,
+          shop: bodyData?.shop,
         },
         // ConditionExpression: 'attribute_not_exists(shop)',
       };
-
+      console.log("putParams", putParams);
       try {
         const data = await documentClient.put(putParams).promise();
-        console.log("put params", data.Items);
         response = buildResponse(200, "Item added successfully");
       } catch (err) {
         response = buildResponse(403, `Unable to put item: ${err}`);

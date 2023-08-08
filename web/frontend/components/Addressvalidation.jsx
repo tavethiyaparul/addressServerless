@@ -151,12 +151,15 @@ export default function Addressvalidation() {
     />
   );
 
-    //get  address validation api
+    
   const getAddressValidation = async () => {
     setLoader(true);
+    const headers = {
+      'x-api-key': 'WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0' 
+    };
     await axios
       .get(
-        `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/addressvalidation?shop=${window.shop}`
+        `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/addressvalidation?shop=${window.shop}`,{ headers }
       )
       .then((res) => {
         setLoader(false);
@@ -210,10 +213,14 @@ export default function Addressvalidation() {
     };
 
     setBtnLoader(true);
+    const headers = {
+      'x-api-key': 'WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0' 
+    };
     await axios
       .post(
         `https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/addressvalidation`,
-        data
+        data,
+        { headers }
       )
       .then((res) => {
         setBtnLoader(false);
