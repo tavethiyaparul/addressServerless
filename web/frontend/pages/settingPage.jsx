@@ -45,7 +45,7 @@ const setting = () => {
     beforeTitle: "",
     topMargin: "",
     shop: "",
-    usageChargePrice:"",
+    // usageChargePrice:"",
   });
 
   const [loader, setLoader] = useState(false);
@@ -143,7 +143,7 @@ const setting = () => {
           bottomMargin: res?.data[0]?.bottomMargin,
           beforeTitle: res?.data[0]?.beforeTitle,
           topMargin: res?.data[0]?.topMargin,
-          usageChargePrice:res?.data[0]?.usageChargePrice
+          // usageChargePrice:res?.data[0]?.usageChargePrice
         });
         setInput({
           text_color: res?.data[0]?.textColor,
@@ -172,7 +172,7 @@ const setting = () => {
       textColor: input?.text_color,
       backColor: input?.background_color,
       shop: window.shop,
-      usageChargePrice:value?.usageChargePrice
+      // usageChargePrice:value?.usageChargePrice
     };
     setBtnLoader(true);
     const headers = {
@@ -238,13 +238,13 @@ const setting = () => {
             />
           </div>
           <br />
-          <TextField
+          {/* <TextField
             label="Usage Charge Price"
             value={value?.usageChargePrice}
             onChange={(e) => handleChangeEvent(e, "usageChargePrice")}
             autoComplete="off"
-          />
-          <br />
+          /> */}
+          {/* <br /> */}
           <div>
             <div
               style={{

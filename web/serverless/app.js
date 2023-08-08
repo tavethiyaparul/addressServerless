@@ -9,6 +9,8 @@
 //                 SHOPIFY_API_VERSION -2023-01
 //                 SHOPIFY_SCOPE -write_script_tag,write_orders
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//TABLE_NAME - displaySetting,addrexxSetting,orderMaster,ShopifyShopMaster
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const AWS = require("aws-sdk"); // Load the AWS SDK for Node.js
 const axios = require("axios");
@@ -54,8 +56,7 @@ exports.handler = async (event, context) => {
       token.access_token
     );
     let responseShop = responseShopData && responseShopData?.shop;
-
-    console.log("===================================", responseShop);
+    
     const params = {
       FunctionName: "addShop",
       Payload: JSON.stringify({
