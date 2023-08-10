@@ -8,6 +8,7 @@
 // ENV VARIABLES - HOST,SHOPIFY_API_KEY,SHOPIFY_API_SECRET
 //                 SHOPIFY_API_VERSION -2023-01
 //                 SHOPIFY_SCOPE -write_script_tag,write_orders
+//                 AMOUNTCHARGE -0.04
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TABLE_NAME - displaySetting,addrexxSetting,orderMaster,ShopifyShopMaster
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +91,7 @@ exports.handler = async (event, context) => {
       Key: { shop: shop },
       UpdateExpression: "SET #usageChargePrice = :usageChargePriceValue",
       ExpressionAttributeNames: { "#usageChargePrice": "usageChargePrice" },
-      ExpressionAttributeValues: { ":usageChargePriceValue": 0.04 },
+      ExpressionAttributeValues: { ":usageChargePriceValue": process.env.AMOUNTCHARGE},
       ReturnValues: "UPDATED_OLD",
     };
 
