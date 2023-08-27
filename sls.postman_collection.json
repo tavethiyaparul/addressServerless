@@ -1,0 +1,467 @@
+{
+	"info": {
+		"_postman_id": "101904a9-8ba5-4baa-81e0-989cdd5da965",
+		"name": "sls",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25288047"
+	},
+	"item": [
+		{
+			"name": "shop",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/Dev/getshopdetails?shop_domain=event.shop1.domain",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Dev",
+						"getshopdetails"
+					],
+					"query": [
+						{
+							"key": "shop_domain",
+							"value": "event.shop1.domain"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/Dev/app?code=58bfb19a586aaf44da76c16880a03fac&hmac=5745f2f6c393384180508d73daf9b5bb1581b4923397f1bcbf08a52fcd7ad531&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvdGVzdC1ldHN5LWFwcA&shop=test-etsy-app.myshopify.com&timestamp=1688716893",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Dev",
+						"app"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "58bfb19a586aaf44da76c16880a03fac"
+						},
+						{
+							"key": "hmac",
+							"value": "5745f2f6c393384180508d73daf9b5bb1581b4923397f1bcbf08a52fcd7ad531"
+						},
+						{
+							"key": "host",
+							"value": "YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvdGVzdC1ldHN5LWFwcA"
+						},
+						{
+							"key": "shop",
+							"value": "test-etsy-app.myshopify.com"
+						},
+						{
+							"key": "timestamp",
+							"value": "1688716893"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add shop",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"shop_domain\":\"shopify\",\r\n            \"access_token\":\"asdfghjkl\",\r\n            \"status\":\"pending\",\r\n            \"payment_status\":\"pending\",\r\n            \"charge_id\":12123,\r\n            \"order_create_webhook\":\"webhook\",\r\n            \"app_uninstall_webhook\":\"webhook\",\r\n            \"status_script_tag\":\"tag\",\r\n            \"created_at\":\"2023-02-02\",\r\n            \"updated_at\":\"2023-02-02\",\r\n             \"shop\":\"ram.myshopify.com\",\r\n            \"phone\":\"9316787815\",\r\n            \"country_code\":\"IN\",\r\n            \"country_name\":\"India\",\r\n            \"access_scope\":\"read_products\",\r\n            \"mailto:email\":\"ram@gmail.com\",\r\n            \"money_formate\":\"Rs.\",\r\n            \"currency\":\"rs\",\r\n            \"zip\":52454521,\r\n            \"city\":\"surat\",\r\n            \"shop_owner\":\"raja\"\r\n            \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/Dev/addshop",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Dev",
+						"addshop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "app",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/Dev/app?code=618e03429b51ea7c083717d22e1c5c48&hmac=4b7c1732681e2a46327f19d098866b04ccaf7d58d054d1b4e4dbd38c51583248&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvcmlzaGl2dGVzdA&shop=rishivtest.myshopify.com&timestamp=1688461448",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Dev",
+						"app"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "618e03429b51ea7c083717d22e1c5c48"
+						},
+						{
+							"key": "hmac",
+							"value": "4b7c1732681e2a46327f19d098866b04ccaf7d58d054d1b4e4dbd38c51583248"
+						},
+						{
+							"key": "host",
+							"value": "YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvcmlzaGl2dGVzdA"
+						},
+						{
+							"key": "shop",
+							"value": "rishivtest.myshopify.com"
+						},
+						{
+							"key": "timestamp",
+							"value": "1688461448"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "address validation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "9lhDvuI4HO9gB8IN5vWzA8kPP9TujSB1h0fRIFHe",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"autoFill\":true,\r\n            \"shipmentPO\":false,\r\n            \"latinCharacters\":false,\r\n            \"postalCode\":false,\r\n            \"capitalizeAddress\":\"capitial letter\",\r\n            \"limitNoOfCharacters\":\"do not limit\",\r\n            \"missingApartment\":false,\r\n            \"validateApartment\":false,\r\n            \"created_at\":\"2023-02-02\",\r\n            \"updated_at\":\"2023-02-02\",\r\n            \"shop\":\"rishivdemo.myshopify.com\",\r\n            \"setDefaultCountry\":false,\r\n            \"selectDefaultCountry\":\"india\",\r\n            \"limitOptionCountry\":true,\r\n            \"countriesExcluded\":\"india,canada\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/addressvalidation",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"api",
+						"addressvalidation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get address",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/addressvalidation?shop=rishiv123.myshopify.com",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"api",
+						"addressvalidation"
+					],
+					"query": [
+						{
+							"key": "shop",
+							"value": "rishiv123.myshopify.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get setting",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/setting?shop=rishiv123.myshopify.com",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"api",
+						"setting"
+					],
+					"query": [
+						{
+							"key": "shop",
+							"value": "rishiv123.myshopify.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create setting",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n            \"backColor\":\"#0000\",\r\n            \"size\":10,\r\n            \"beforeTitle\":\"after\",\r\n            \"afterTitle\":\"after\",\r\n            \"textColor\":\"#1111\",\r\n            \"topMargin\":10,\r\n            \"bottomMargin\":10,\r\n            \"shop\":\"rishiv123.myshopify.com\",\r\n            \"scriptId\":1245645,\r\n            \"usageChargePrice\":0.04\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/setting",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"api",
+						"setting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Shopify-Access-Token",
+						"value": "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",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://test-etsy-app.myshopify.com/admin/api/2023-04/script_tags.json",
+					"protocol": "https",
+					"host": [
+						"test-etsy-app",
+						"myshopify",
+						"com"
+					],
+					"path": [
+						"admin",
+						"api",
+						"2023-04",
+						"script_tags.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/webhook",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"api",
+						"webhook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Shopify-Access-Token",
+						"value": "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",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"order\":{\"id\":\"5404591161628\",\"shipping_address\":{\"address1\":\"1234 Ship Street\",\"city\":\"Shipsville\"}}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://addrexxappmixo.myshopify.com/admin/api/2023-01/orders/5456408477991.json",
+					"protocol": "https",
+					"host": [
+						"addrexxappmixo",
+						"myshopify",
+						"com"
+					],
+					"path": [
+						"admin",
+						"api",
+						"2023-01",
+						"orders",
+						"5456408477991.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "manual usage charge",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "WCCVZwsyADEpXKtAxaRZ4P0ctah32qS7k4Usw5I0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"shop\":\"rishivtest123.myshopify.com\",\r\n    \"id\":1124613292308\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fbtu4zlun9.execute-api.us-east-1.amazonaws.com/api/manualusagecharge",
+					"protocol": "https",
+					"host": [
+						"fbtu4zlun9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"api",
+						"manualusagecharge"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
